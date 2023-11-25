@@ -38,5 +38,5 @@ setup(
             'coupledinput = coupledinput:CoupledInputXBlock',
         ]
     },
-    package_data=package_data("coupledinput", ["static", "public"]),
+    package_data=package_data("coupledinput", ["static", "public", "migrations"]),
 )
