@@ -9,7 +9,6 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import Boolean, String, Scope
 from django.template import Context, Template
-from .models import CoupledInputResponse, CoupledInputUser
 
 class CoupledInputXBlock(XBlock):
     """Displays names, and two boxes for each response."""
@@ -237,7 +236,9 @@ class CoupledInputXBlock(XBlock):
             self.response_two = r_two
             changed = True
 
+        from .models import CoupledInputResponse, CoupledInputUser
         if changed:
+
             try:
                 user_id = self.runtime.user_id
                 data, _ = CoupledInputResponse.objects.get_or_create(
@@ -282,7 +283,9 @@ class CoupledInputXBlock(XBlock):
             self.username_two = r_two
             changed = True
 
+        from .models import CoupledInputResponse, CoupledInputUser
         if changed:
+
             user_id = self.runtime.user_id
             user_name = self.get_user_name(user_id)
             data, _ = CoupledInputUser.objects.get_or_create(
