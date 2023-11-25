@@ -1,0 +1,45 @@
+<div class="coupledinput_container">
+    <!-- Overlay for disabling interactions -->
+    <div class="coupledinput_overlay"></div>
+    {% if show_abbrev %}
+       <div class="coupledinput_flex">
+       <div class="coupledinput_prompt_abbrev"><strong>{self.prompt}</strong></div>
+       <div class="coupledinput_input_abbrev">
+       {% if not hide_one %}
+       <div class="coupledinput_wrapper"><input type="text" id="response_one" class="coupledinput_wideinput" placeholder="{self.username_one}'s Response" value="{self.response_one}"></div>
+       {% endif %}
+       {% if not hide_two %}
+       <div class="coupledinput_wrapper"><input type="text" id="response_two" class="coupledinput_wideinput" placeholder="{self.username_two}'s Response" value="{self.response_two}"></div>
+       {% endif %}
+       </div>
+       </div>
+    {% else %}
+       <strong>{self.prompt}</strong>
+       <br>
+       <br>
+       {% if not hide_one and not show_reversed %}
+       <em>{self.username_one}'s Response:</em>
+       <br>
+       <textarea id="response_one" class="coupledinput_textarea" placeholder="enter text" rows="4" cols="50">{self.response_one}</textarea>
+       <br>
+       <br>
+       {% endif %}
+       {% if not hide_two %}
+       <em>{self.username_two}'s Response:</em>
+       <br>
+       <textarea id="response_two" class="coupledinput_textarea" placeholder="enter text" rows="4" cols="50">{self.response_two}</textarea>
+       <br>
+       <br>
+       {% endif %}
+       {% if not hide_one and show_reversed %}
+       <em>{self.username_one}'s Response:</em>
+       <br>
+       <textarea id="response_one" class="coupledinput_textarea" placeholder="Enter Input One" rows="4" cols="50">{self.response_one}</textarea>
+       {% endif %}
+    {% endif %}
+    <br>
+    <br>
+    <button id="submit_response">Submit</button><span id="save_response"></span>
+    <!-- Watermark -->
+    <div class="coupledinput_watermark">This is a preview, click EDIT (above) to modify this component.</div>
+</div>

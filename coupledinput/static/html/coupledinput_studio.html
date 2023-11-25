@@ -1,0 +1,23 @@
+<div class="coupledinput_container">
+  <div id="prompt_div">
+    <span>Prompt for couple:</span>
+    <input type="text" id="prompt" placeholder="TBD" value="{self.prompt}">
+  </div>
+  <div>
+    <input type="checkbox" id="show_names" {{show_names_is_checked}}> <label for="show_names">Show user name entry instead of prompt? </label>
+  </div>
+  <div>
+    <input type="checkbox" id="hide_one" {{hide_one_is_checked}}> <label for="hide_one">Hide User One Response? </label>
+  </div>
+  <div>
+    <input type="checkbox" id="hide_two" {{hide_two_is_checked}}> <label for="hide_two">Hide User Two Response? </label>
+  </div>
+  <div>
+    <input type="checkbox" id="show_reversed" {{show_reversed_is_checked}}> <label for="show_reversed">Swap user response order?</label>
+  </div>
+  <div>
+    <input type="checkbox" id="show_abbrev" {{show_abbrev_is_checked}}> <label for="show_abbrev">Show responses in abbreviated view</label>
+  </div>
+    <br>
+    <button id="submit_studio">Submit</button><span id="save_studio"></span>
+</div>

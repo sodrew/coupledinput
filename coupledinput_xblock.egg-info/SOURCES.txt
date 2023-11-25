@@ -1,0 +1,13 @@
+setup.py
+coupledinput/__init__.py
+coupledinput/coupledinput.py
+coupledinput/static/README.txt
+coupledinput/static/css/coupledinput.css
+coupledinput/static/html/coupledinput.html
+coupledinput/static/js/src/coupledinput.js
+coupledinput_xblock.egg-info/PKG-INFO
+coupledinput_xblock.egg-info/SOURCES.txt
+coupledinput_xblock.egg-info/dependency_links.txt
+coupledinput_xblock.egg-info/entry_points.txt
+coupledinput_xblock.egg-info/requires.txt
+coupledinput_xblock.egg-info/top_level.txt

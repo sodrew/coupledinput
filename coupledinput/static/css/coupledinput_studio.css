@@ -1,0 +1,55 @@
+/* CSS for CoupledInputXBlock */
+
+.coupledinput_textarea {
+    min-height: 200px;
+    column-count: initial !important;
+}
+
+.coupledinput_container {
+    position: relative;
+}
+
+.coupledinput_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+    z-index: 1; /* Ensure it's above other elements */
+}
+
+.coupledinput_watermark {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    pointer-events: none;
+    font-size: 14px;
+    transform: rotate(-10deg); /* Rotate the watermark by 15 degrees */
+    transform-origin: center; /* Set the rotation origin to the top-left corner */
+    z-index: 2; /* Ensure it's above the overlay */
+}
+
+.coupledinput_prompt_abbrev {
+    width: 66%;
+    float: left;
+}
+
+.coupledinput_input_abbrev {
+    width: 34%;
+    display:flex;
+}
+
+.coupledinput_flex {
+    display:flex;
+}
+
+.coupledinput_wrapper {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.coupledinput_wideinput {
+    width: 100%;
+    box-sizing: border-box;
+}

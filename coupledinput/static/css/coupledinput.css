@@ -1,0 +1,41 @@
+/* CSS for CoupledInputXBlock */
+
+.coupledinput_textarea {
+    min-height: 200px;
+    column-count: initial !important;
+}
+
+.coupledinput_container {
+}
+
+.coupledinput_overlay {
+    visibility: hidden;
+}
+
+.coupledinput_watermark {
+    visibility: hidden;
+}
+
+.coupledinput_prompt_abbrev {
+    width: 66%;
+    float: left;
+}
+
+.coupledinput_input_abbrev {
+    width: 34%;
+    display:flex;
+}
+
+.coupledinput_flex {
+    display:flex;
+}
+
+.coupledinput_wrapper {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.coupledinput_wideinput {
+    width: 100%;
+    box-sizing: border-box;
+}
