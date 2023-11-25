@@ -28,7 +28,7 @@ setup(
     description='coupledinput XBlock',   # TODO: write a better description.
     license='AGPL v3',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     packages=[
-        'coupledinput', 'coupledinput.*',
+        'coupledinput',
     ],
     install_requires=[
         'XBlock',
