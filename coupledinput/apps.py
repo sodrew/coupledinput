@@ -5,9 +5,12 @@ coupledinput Django application initialization.
 from django.apps import AppConfig
 
 
-class CoupledinputConfig(AppConfig):
+class CoupledInputConfig(AppConfig):
     """
     Configuration for the coupledinput Django application.
     """
 
     name = 'coupledinput'
+
+    def ready(self):
+        pass

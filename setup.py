@@ -4,7 +4,9 @@
 import os
 
 from setuptools import setup
+import setuptools
 
+# https://github.com/tony-h/rocketchat-tab/blob/main/setup.py
 
 def package_data(pkg, roots):
     """Generic function to find package_data.
@@ -27,16 +29,17 @@ setup(
     version='0.2',
     description='coupledinput XBlock',   # TODO: write a better description.
     license='AGPL v3',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
-    packages=[
-        'coupledinput',
-    ],
+    packages=setuptools.find_packages(),
     install_requires=[
         'XBlock',
     ],
     entry_points={
         'xblock.v1': [
             'coupledinput = coupledinput:CoupledInputXBlock',
-        ]
+        ],
+        "lms.djangoapp": [
+            "coupledinput = coupledinput.apps:CoupledInputConfig",
+        ],
     },
     package_data=package_data("coupledinput", ["static", "public", "migrations"]),
 )
