@@ -25,8 +25,8 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='coupledinput-xblock',
-    version='0.2',
+    name='coupledinput',
+    version='0.3',
     description='coupledinput XBlock',   # TODO: write a better description.
     license='AGPL v3',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     packages=setuptools.find_packages(),
