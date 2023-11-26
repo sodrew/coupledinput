@@ -26,7 +26,7 @@ def package_data(pkg, roots):
 
 setup(
     name='coupledinput',
-    version='0.10',
+    version='0.12',
     description='XBlock that enables two responders to questions in a course',
     license='AGPL v3',
     url="https://github.com/sodrew/coupledinput",

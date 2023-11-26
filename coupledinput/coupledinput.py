@@ -8,6 +8,7 @@ from django.template import Context, Template
 import unicodecsv
 from io import BytesIO as StringIO
 
+
 class CoupledInputXBlock(XBlock):
     """Displays names, and two boxes for each response."""
 

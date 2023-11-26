@@ -53,6 +53,12 @@ function CoupledInputXBlock(runtime, element) {
         save_and_update(element, 'save_studio', data);
     });
 
+    $element.find('#export_csv').click(function (ev) {
+        ev.preventDefault();
+        window.location = runtime.handlerUrl(element,
+                                             'export_csv');
+    });
+
     function check_show_names_cb(name_click, abbrev_click){
         var show_names = $element.find('#show_names');
         var show_names_state = $element.find('#show_names').is(':checked');
