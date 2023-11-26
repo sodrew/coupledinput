@@ -240,19 +240,19 @@ class CoupledInputXBlock(XBlock):
         if changed:
             try:
                 user_id = self.runtime.user_id
+                print('0----------------------------')
+                print('course: ', len(str(self.course_id)), str(self.course_id))
+                print('user: ', len(str(user_id)), str(user_id))
+                print('block: ', len(str(self.location.block_id)), str(self.location.block_id))
                 data, _ = CoupledInputResponse.objects.get_or_create(
                     course_id=str(self.course_id),
                     student_id=user_id,
-                    block_id=self.location,
+                    block_id=self.location.block_id,
                 )
                 data.prompt = self.prompt
                 data.response_one = r_one
                 data.response_two = r_two
                 data.save()
-                print('0----------------------------')
-                print('course: ', len(str(self.course_id)), str(self.course_id))
-                print('user: ', len(str(user_id)), str(user_id))
-                print('block: ', len(str(self.location)), str(self.location))
             except Exception as e:
                 # Handle any other unexpected exceptions
                 print("Error while saving to DB:", e)
