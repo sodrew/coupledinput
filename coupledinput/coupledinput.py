@@ -238,7 +238,6 @@ class CoupledInputXBlock(XBlock):
 
         from .models import CoupledInputResponse, CoupledInputUser
         if changed:
-
             try:
                 user_id = self.runtime.user_id
                 data, _ = CoupledInputResponse.objects.get_or_create(
@@ -251,14 +250,17 @@ class CoupledInputXBlock(XBlock):
                 data.response_two = r_two
                 data.save()
                 print('0----------------------------')
+                print('course: ', len(str(self.course_id)), str(self.course_id))
+                print('user: ', len(str(user_id)), str(user_id))
+                print('block: ', len(str(self.location)), str(self.location))
             except Exception as e:
                 # Handle any other unexpected exceptions
-                print("An error occurred:", e)
+                print("Error while saving to DB:", e)
 
         print('1----------------------------')
         responses = CoupledInputResponse.objects.filter(
             course_id=str(self.course_id),
-        )#.order_by('student_id', 'name')
+        ).order_by('student_id', 'name')
 
         if responses:
             print('2----------------------------')
