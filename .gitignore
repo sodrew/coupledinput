@@ -6,7 +6,6 @@
 *.bak
 *.gz
 old/
-migrations/
 *.yaml
 *.pem
 *.csr
