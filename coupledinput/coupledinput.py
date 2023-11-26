@@ -1,14 +1,12 @@
-"""todo"""
-# multiple prompts
-# export users
-
-
 """Add the ability to show two responses for a prompt."""
 import pkg_resources
+from webob import Response
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import Boolean, String, Scope
 from django.template import Context, Template
+import unicodecsv
+from io import BytesIO as StringIO
 
 class CoupledInputXBlock(XBlock):
     """Displays names, and two boxes for each response."""
@@ -236,14 +234,17 @@ class CoupledInputXBlock(XBlock):
             self.response_two = r_two
             changed = True
 
-        from .models import CoupledInputResponse, CoupledInputUser
+        from .models import CoupledInputResponse
+        print('hi----------------=')
         if changed:
             try:
                 user_id = self.runtime.user_id
                 print('0----------------------------')
-                print('course: ', len(str(self.course_id)), str(self.course_id))
+                print('course: ', len(str(self.course_id)),
+                      str(self.course_id))
                 print('user: ', len(str(user_id)), str(user_id))
-                print('block: ', len(str(self.location.block_id)), str(self.location.block_id))
+                print('block: ', len(str(self.location.block_id)),
+                      str(self.location.block_id))
                 data, _ = CoupledInputResponse.objects.get_or_create(
                     course_id=str(self.course_id),
                     student_id=user_id,
@@ -260,14 +261,13 @@ class CoupledInputXBlock(XBlock):
         print('1----------------------------')
         responses = CoupledInputResponse.objects.filter(
             course_id=str(self.course_id),
-        ).order_by('student_id', 'name')
+        ).order_by('student_id')
 
         if responses:
             print('2----------------------------')
             for response in responses:
                 print('3----------------------------')
                 print(response)
-        # answers_names = answers.values_list('name', flat=True).distinct().order_by('name')
 
         return self.send_json_save_status(changed)
 
@@ -285,7 +285,7 @@ class CoupledInputXBlock(XBlock):
             self.username_two = r_two
             changed = True
 
-        from .models import CoupledInputResponse, CoupledInputUser
+        from .models import CoupledInputUser
         if changed:
 
             user_id = self.runtime.user_id
@@ -300,6 +300,56 @@ class CoupledInputXBlock(XBlock):
             data.save()
 
         return self.send_json_save_status(changed)
+
+    @XBlock.handler
+    def export_csv(self, request, suffix=''):
+        """Handle the export click."""
+        response = Response(content_type='text/csv')
+        response.app_iter = self.get_csv()
+        response.content_disposition = 'attachment; filename=course_data.csv'
+        return response
+
+    def get_csv(self):
+        """Provide the CSV data."""
+        from .models import CoupledInputResponse
+
+        responses = CoupledInputResponse.objects.filter(
+            course_id=str(self.course_id),
+        ).order_by('student_id')
+
+        for response in responses:
+            print('response', response)
+
+        # Header line
+        yield self.list2csv(['student_id'])
+
+        #     for _, student_answers in groupby(answers, lambda x: x.student_id):
+        #         row = []
+        #         next_answer_idx = 0
+        #         for answer in student_answers:
+        #             if not row:
+        #                 row = [answer.student_id]
+
+        #             while answer.name != answers_names[next_answer_idx]:
+        #                 # Still add answer row to CSV when they don't exist in DB
+        #                 row.append('')
+        #                 next_answer_idx += 1
+
+        #             row.append(answer.student_input)
+        #             next_answer_idx += 1
+
+        #         if row:
+        #             yield self.list2csv(row)
+
+    def list2csv(self, row):
+        """
+        Convert a list to a CSV string (single row)
+        """
+        f = StringIO()
+        writer = unicodecsv.writer(f, encoding='utf-8')
+        writer.writerow(row)
+        f.seek(0)
+        return f.read()
 
     # def get_blocks_of_type(self, course_id, block_type):
     #     from opaque_keys.edx.keys import CourseKey

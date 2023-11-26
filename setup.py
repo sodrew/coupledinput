@@ -26,13 +26,14 @@ def package_data(pkg, roots):
 
 setup(
     name='coupledinput',
-    version='0.8',
+    version='0.10',
     description='XBlock that enables two responders to questions in a course',
-    license='AGPL v3',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
+    license='AGPL v3',
     url="https://github.com/sodrew/coupledinput",
     packages=setuptools.find_packages(),
     install_requires=[
         'XBlock',
+        'unicodecsv',
     ],
     entry_points={
         'xblock.v1': [
@@ -42,5 +43,6 @@ setup(
             "coupledinput = coupledinput.apps:CoupledInputConfig",
         ],
     },
-    package_data=package_data("coupledinput", ["static", "public", "migrations"]),
+    package_data=package_data("coupledinput",
+                              ["static", "public", "migrations"]),
 )
