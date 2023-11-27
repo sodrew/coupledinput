@@ -26,11 +26,13 @@ def package_data(pkg, roots):
 
 setup(
     name='coupledinput',
-    version='0.12',
+    version='0.18',
     description='XBlock that enables two responders to questions in a course',
     license='AGPL v3',
-    url="https://github.com/sodrew/coupledinput",
-    packages=setuptools.find_packages(),
+    # url="https://github.com/sodrew/coupledinput",
+    packages=[
+        'coupledinput',
+    ],
     install_requires=[
         'XBlock',
         'unicodecsv',

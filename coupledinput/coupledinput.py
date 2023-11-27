@@ -236,7 +236,6 @@ class CoupledInputXBlock(XBlock):
             changed = True
 
         from .models import CoupledInputResponse
-        print('hi----------------=')
         if changed:
             try:
                 user_id = self.runtime.user_id
@@ -258,17 +257,6 @@ class CoupledInputXBlock(XBlock):
             except Exception as e:
                 # Handle any other unexpected exceptions
                 print("Error while saving to DB:", e)
-
-        print('1----------------------------')
-        responses = CoupledInputResponse.objects.filter(
-            course_id=str(self.course_id),
-        ).order_by('student_id')
-
-        if responses:
-            print('2----------------------------')
-            for response in responses:
-                print('3----------------------------')
-                print(response)
 
         return self.send_json_save_status(changed)
 
@@ -312,45 +300,68 @@ class CoupledInputXBlock(XBlock):
 
     def get_csv(self):
         """Provide the CSV data."""
-        from .models import CoupledInputResponse
+        from .models import CoupledInputResponse, CoupledInputUser
 
-        responses = CoupledInputResponse.objects.filter(
-            course_id=str(self.course_id),
+        course_id = str(self.course_id)
+        print('course_id', course_id)
+        # retrieve all of the users names for the course
+        users = CoupledInputUser.objects.filter(
+            course_id=course_id,
         ).order_by('student_id')
 
+        # create a username lookup dict
+        users_lookup = {user.student_id: user.to_val_list() for user in users}
+
+        # retrieve all of the responses for the course
+        responses = CoupledInputResponse.objects.filter(
+            course_id=course_id,
+        ).order_by('student_id')
+
+        buf = StringIO()
+        writer = unicodecsv.writer(buf, encoding='utf-8')
+        writer.writerow([
+            'course_id',
+            'student_id',
+            'student_name',
+            'user_one',
+            'user_two',
+            'block_id',
+            'prompt',
+            'response_one',
+            'response_two',
+        ])
+
+        print("yo")
+
         for response in responses:
-            print('response', response)
+            if response.student_id in users_lookup:
+                user = users_lookup[response.student_id]
+            else:
+                user = [
+                        'unknown student',
+                        'unknown 1',
+                        'unknown 2',
+                        ]
+            print(user)
 
-        # Header line
-        yield self.list2csv(['student_id'])
+            row = [course_id, response.student_id]
+            row += user
+            row += response.to_val_list()
+            print(row)
+            writer.writerow([
+                'course_id',
+                'student_id',
+                'student_name',
+                'user_one',
+                'user_two',
+                'block_id',
+                'prompt',
+                'response_one',
+                'response_two',
+            ])
+        buf.seek(0)
+        return buf.read()
 
-        #     for _, student_answers in groupby(answers, lambda x: x.student_id):
-        #         row = []
-        #         next_answer_idx = 0
-        #         for answer in student_answers:
-        #             if not row:
-        #                 row = [answer.student_id]
-
-        #             while answer.name != answers_names[next_answer_idx]:
-        #                 # Still add answer row to CSV when they don't exist in DB
-        #                 row.append('')
-        #                 next_answer_idx += 1
-
-        #             row.append(answer.student_input)
-        #             next_answer_idx += 1
-
-        #         if row:
-        #             yield self.list2csv(row)
-
-    def list2csv(self, row):
-        """
-        Convert a list to a CSV string (single row)
-        """
-        f = StringIO()
-        writer = unicodecsv.writer(f, encoding='utf-8')
-        writer.writerow(row)
-        f.seek(0)
-        return f.read()
 
     # def get_blocks_of_type(self, course_id, block_type):
     #     from opaque_keys.edx.keys import CourseKey

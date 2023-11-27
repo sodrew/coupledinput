@@ -24,6 +24,14 @@ class CoupledInputResponse(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+    def to_val_list(self):
+        return [
+            self.block_id,
+            self.prompt,
+            self.response_one,
+            self.response_two,
+        ]
+
 class CoupledInputUser(models.Model):
     """ Django model used to store CoupledInput data. """
     """ This data needs to be shared and queried across users
@@ -45,3 +53,9 @@ class CoupledInputUser(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+    def to_val_list(self):
+        return [
+            self.student_name,
+            self.name_one,
+            self.name_two,
+        ]
