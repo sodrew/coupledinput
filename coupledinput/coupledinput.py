@@ -9,6 +9,7 @@ import unicodecsv
 from io import BytesIO as StringIO
 
 
+@XBlock.wants("user")
 class CoupledInputXBlock(XBlock):
     """Displays names, and two boxes for each response."""
 
@@ -240,13 +241,13 @@ class CoupledInputXBlock(XBlock):
             try:
                 course_id = str(self.course_id)
                 user_id = str(self.runtime.user_id)
-                block_id = str(self.location.block_id))
+                block_id = str(self.location.block_id)
                 print('----------------------------')
                 print('course: ', course_id)
                 print('user: ', user_id)
                 print('block: ', block_id)
                 data, _ = CoupledInputResponse.objects.get_or_create(
-                    course_id=course_id),
+                    course_id=course_id,
                     student_id=user_id,
                     block_id=block_id,
                 )
@@ -283,12 +284,15 @@ class CoupledInputXBlock(XBlock):
                     course_id=course_id,
                     student_id=user_id,
                 )
-                user_info = self.runtime.get_user_info(user_id)
+                user_service = self.runtime.service(self, 'user')
+                xb_user = user_service.get_current_user()
+                student = (xb_user.emails[0] if xb_user.emails
+                           else xb_user.full_name)
                 print('----------------------------')
                 print('course: ', course_id)
                 print('user: ', user_id)
-                print('student: ', user_info['user_name'])
-                data.student_name = user_info['user_name']
+                print('student: ', student)
+                data.student_name = student
                 data.name_one = r_one
                 data.name_two = r_two
                 data.save()
