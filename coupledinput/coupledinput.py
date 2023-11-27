@@ -235,20 +235,20 @@ class CoupledInputXBlock(XBlock):
             self.response_two = r_two
             changed = True
 
-        from .models import CoupledInputResponse
         if changed:
+            from .models import CoupledInputResponse
             try:
-                user_id = self.runtime.user_id
-                print('0----------------------------')
-                print('course: ', len(str(self.course_id)),
-                      str(self.course_id))
-                print('user: ', len(str(user_id)), str(user_id))
-                print('block: ', len(str(self.location.block_id)),
-                      str(self.location.block_id))
+                course_id = str(self.course_id)
+                user_id = str(self.runtime.user_id)
+                block_id = str(self.location.block_id))
+                print('----------------------------')
+                print('course: ', course_id)
+                print('user: ', user_id)
+                print('block: ', block_id)
                 data, _ = CoupledInputResponse.objects.get_or_create(
-                    course_id=str(self.course_id),
+                    course_id=course_id),
                     student_id=user_id,
-                    block_id=self.location.block_id,
+                    block_id=block_id,
                 )
                 data.prompt = self.prompt
                 data.response_one = r_one
@@ -274,19 +274,27 @@ class CoupledInputXBlock(XBlock):
             self.username_two = r_two
             changed = True
 
-        from .models import CoupledInputUser
         if changed:
-
-            user_id = self.runtime.user_id
-            user_name = self.get_user_name(user_id)
-            data, _ = CoupledInputUser.objects.get_or_create(
-                course_id=str(self.course_id),
-                student_id=user_id,
-            )
-            data.student_name = user_name
-            data.name_one = r_one
-            data.name_two = r_two
-            data.save()
+            from .models import CoupledInputUser
+            try:
+                course_id = str(self.course_id)
+                user_id = str(self.runtime.user_id)
+                data, _ = CoupledInputUser.objects.get_or_create(
+                    course_id=course_id,
+                    student_id=user_id,
+                )
+                user_info = self.runtime.get_user_info(user_id)
+                print('----------------------------')
+                print('course: ', course_id)
+                print('user: ', user_id)
+                print('student: ', user_info['user_name'])
+                data.student_name = user_info['user_name']
+                data.name_one = r_one
+                data.name_two = r_two
+                data.save()
+            except Exception as e:
+                # Handle any other unexpected exceptions
+                print("Error while saving to DB:", e)
 
         return self.send_json_save_status(changed)
 
@@ -331,8 +339,6 @@ class CoupledInputXBlock(XBlock):
             'response_two',
         ])
 
-        print("yo")
-
         for response in responses:
             if response.student_id in users_lookup:
                 user = users_lookup[response.student_id]
@@ -342,26 +348,13 @@ class CoupledInputXBlock(XBlock):
                         'unknown 1',
                         'unknown 2',
                         ]
-            print(user)
 
             row = [course_id, response.student_id]
             row += user
             row += response.to_val_list()
-            print(row)
-            writer.writerow([
-                'course_id',
-                'student_id',
-                'student_name',
-                'user_one',
-                'user_two',
-                'block_id',
-                'prompt',
-                'response_one',
-                'response_two',
-            ])
+            writer.writerow(row)
         buf.seek(0)
         return buf.read()
-
 
     # def get_blocks_of_type(self, course_id, block_type):
     #     from opaque_keys.edx.keys import CourseKey
